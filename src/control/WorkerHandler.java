@@ -1,6 +1,7 @@
 package control;
 
 import model.BinarySearchTree;
+import model.Task;
 import model.Worker;
 
 public class WorkerHandler {
@@ -19,6 +20,13 @@ public class WorkerHandler {
      */
     public void addTaskAndWorker(String name, int id){
         //TODO 03: Setzen Sie die Methode gemäß obiger Beschreibung um.
+        Worker worker = new Worker(name);
+        if(allWorker.search(worker) == null){
+            worker.addTask(id);
+            allWorker.insert(worker);
+        }else{
+            allWorker.search(worker).addTask(id);
+        }
     }
 
     /**
@@ -41,6 +49,18 @@ public class WorkerHandler {
         String output = "";
         //TODO 04a: Stellen Sie handschriftlich die gewünschte Ausgabe gemäß des vorhanden Baums dar (siehe MainController ab Zeile 13). Hierbei genügen die ersten drei Arbeiter und ihre IDs, die von dieser Methode ausgegeben werden.
         //TODO 04b: Setzen Sie anschließend diese Methode gemäß obiger Beschreibung um.
-        return output;
+        if(!tree.isEmpty()) {
+            output = "1" + tree.getContent().getName() + ":";
+            while (tree.getContent().hasTask()) {
+                output = output + tree.getContent().completeTask().getID() + ".";
+            }
+            output = output + "#";
+
+            return releaseAllTasksAndShowWorker(tree.getLeftTree()) + output + releaseAllTasksAndShowWorker(tree.getRightTree());
+        }
+        return ".";
+
+
+
     }
 }
