@@ -4,10 +4,12 @@ package model;
 public class Worker implements ComparableContent<Worker>{
     private String name;
     private Queue<Task> allTasks;
+    private int competence;
 
     public Worker(String name){
         this.name = name;
         allTasks = new Queue<>();
+        competence = (int) (Math.random() * 15) + 5;
     }
 
     public String getName(){
@@ -26,6 +28,37 @@ public class Worker implements ComparableContent<Worker>{
 
     public boolean hasTask(){
         return !allTasks.isEmpty();
+    }
+
+    public int getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(int competence) {
+        this.competence = competence;
+    }
+
+    public int getCurrentTaskgrade(){
+        if(!allTasks.isEmpty()) {
+            return allTasks.front().getTaskGrade();
+        }else{
+            return 0;
+        }
+    }
+
+    public int getWorkLoad(){
+        int result = 0;
+        Queue<Task> help = new Queue<>();
+        while(!allTasks.isEmpty()){
+            help.enqueue(allTasks.front());
+            result += allTasks.front().getTaskGrade();
+            allTasks.dequeue();
+        }
+        while(!help.isEmpty()){
+            allTasks.enqueue(help.front());
+            help.dequeue();
+        }
+        return result;
     }
 
     @Override
